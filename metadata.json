@@ -1,0 +1,6 @@
+{
+  "name": "GymBuddy",
+  "description": "AI-powered personal gym and nutrition companion. Personalized beginner workouts with form cues, goal-calibrated diet plans (veg & non-veg), meal eating timers, daily spend budget tracking, and GM macro and fiber measurements.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

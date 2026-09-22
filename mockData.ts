@@ -1,0 +1,331 @@
+import { Exercise, UserProfile, StrengthProgressItem, WorkoutLog, WorkoutSession } from '../types';
+
+export const EXERCISES: Record<string, Exercise> = {
+  bench_press: {
+    id: 'bench_press',
+    name: 'Bench Press',
+    targetMuscles: ['Chest', 'Triceps', 'Shoulders'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 40,
+    weightUnit: 'kg',
+    animationType: 'bench_press',
+    videoUrl: '/videos/bench_press.mp4',
+    instructions: [
+      'Set your shoulders and grip the bar slightly wider than shoulder width.',
+      'Lower the bar with control toward your mid-chest.',
+      'Press the bar upward in a smooth arc while maintaining control.',
+    ],
+    formTip: 'Keep your shoulder blades pinched and stable throughout the movement.',
+    commonMistake: 'Avoid bouncing the bar off your chest or flaring elbows 90 degrees.',
+    alternativeExerciseId: 'incline_press',
+    alternativeName: 'Incline Press',
+    alternativeReason: 'Emphasizes upper chest and provides an adjustable press angle.',
+  },
+  pull_ups: {
+    id: 'pull_ups',
+    name: 'Pull-Ups',
+    targetMuscles: ['Back (Lats)', 'Biceps', 'Forearms', 'Core'],
+    defaultSets: 3,
+    defaultReps: 8,
+    defaultWeight: 0,
+    weightUnit: 'kg',
+    animationType: 'pull_ups',
+    videoUrl: '/videos/lat_pulldown.mp4',
+    instructions: [
+      'Grip the pull-up bar slightly wider than shoulder-width with palms facing away.',
+      'Pull your chest upward toward the bar, driving your elbows down toward your ribs.',
+      'Lower yourself with full control to a full arm hang before starting the next rep.',
+    ],
+    formTip: 'Lead with your chest and avoid kicking or swinging your legs for momentum.',
+    commonMistake: 'Kipping with the lower body or only doing half repetitions.',
+    alternativeExerciseId: 'bent_over_row',
+    alternativeName: 'Bent-Over Row',
+    alternativeReason: 'Easier to scale load incrementally while building back strength.',
+  },
+  // Backward compatibility alias for lat_pulldown pointing to Pull-Ups
+  lat_pulldown: {
+    id: 'lat_pulldown',
+    name: 'Pull-Ups',
+    targetMuscles: ['Back (Lats)', 'Biceps', 'Forearms', 'Core'],
+    defaultSets: 3,
+    defaultReps: 8,
+    defaultWeight: 0,
+    weightUnit: 'kg',
+    animationType: 'pull_ups',
+    videoUrl: '/videos/lat_pulldown.mp4',
+    instructions: [
+      'Grip the pull-up bar slightly wider than shoulder-width with palms facing away.',
+      'Pull your chest upward toward the bar, driving your elbows down toward your ribs.',
+      'Lower yourself with full control to a full arm hang before starting the next rep.',
+    ],
+    formTip: 'Lead with your chest and avoid kicking or swinging your legs for momentum.',
+    commonMistake: 'Kipping with the lower body or only doing half repetitions.',
+    alternativeExerciseId: 'bent_over_row',
+    alternativeName: 'Bent-Over Row',
+    alternativeReason: 'Easier to scale load incrementally while building back strength.',
+  },
+  shoulder_press: {
+    id: 'shoulder_press',
+    name: 'Shoulder Press',
+    targetMuscles: ['Shoulders (Deltoids)', 'Triceps', 'Upper Chest'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 20,
+    weightUnit: 'kg',
+    animationType: 'shoulder_press',
+    videoUrl: '/videos/shoulder_press.mp4',
+    instructions: [
+      'Hold the bar or dumbbells at shoulder level with elbows beneath hands.',
+      'Press overhead smoothly until arms are almost fully extended.',
+      'Lower with control back to collarbone level without shrugging shoulders.',
+    ],
+    formTip: 'Keep your core braced so your lower back does not arch excessively.',
+    commonMistake: 'Arching lower back backward or leaning torso excessively.',
+  },
+  bent_over_row: {
+    id: 'bent_over_row',
+    name: 'Bent-Over Row',
+    targetMuscles: ['Mid Back (Rhomboids)', 'Lats', 'Biceps', 'Lower Back'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 30,
+    weightUnit: 'kg',
+    animationType: 'bent_over_row',
+    videoUrl: '/videos/cable_row.mp4',
+    instructions: [
+      'Hinge at hips with a flat back, soft knees, and bar hanging at arm length.',
+      'Row the weight up toward your lower ribcage, driving elbows behind you.',
+      'Lower the weight with control back to full extension without rounding spine.',
+    ],
+    formTip: 'Chest proud, spine neutral; pull with your back and shoulder blades, not just arms.',
+    commonMistake: 'Swinging the torso up and down to create momentum.',
+  },
+  // Backward compatibility alias for cable_row
+  cable_row: {
+    id: 'cable_row',
+    name: 'Bent-Over Row',
+    targetMuscles: ['Mid Back (Rhomboids)', 'Lats', 'Biceps', 'Lower Back'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 30,
+    weightUnit: 'kg',
+    animationType: 'bent_over_row',
+    videoUrl: '/videos/cable_row.mp4',
+    instructions: [
+      'Hinge at hips with a flat back, soft knees, and bar hanging at arm length.',
+      'Row the weight up toward your lower ribcage, driving elbows behind you.',
+      'Lower the weight with control back to full extension without rounding spine.',
+    ],
+    formTip: 'Chest proud, spine neutral; pull with your back and shoulder blades, not just arms.',
+    commonMistake: 'Swinging the torso up and down to create momentum.',
+  },
+  dumbbell_curl: {
+    id: 'dumbbell_curl',
+    name: 'Dumbbell Curl',
+    targetMuscles: ['Biceps', 'Forearms'],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 10,
+    weightUnit: 'kg',
+    animationType: 'dumbbell_curl',
+    videoUrl: '/videos/dumbbell_curl.mp4',
+    instructions: [
+      'Stand upright with a dumbbell in each hand, palms facing forward.',
+      'Curl the dumbbells upward toward your shoulders, keeping elbows stationary.',
+      'Lower the weights slowly under tension to the full arm hang.',
+    ],
+    formTip: 'Keep elbows tucked closely to your ribs without swinging.',
+    commonMistake: 'Leaning back to cheat the weight up.',
+  },
+  tricep_pushdown: {
+    id: 'tricep_pushdown',
+    name: 'Tricep Extension',
+    targetMuscles: ['Triceps'],
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 20,
+    weightUnit: 'kg',
+    animationType: 'tricep_pushdown',
+    videoUrl: '/videos/tricep_pushdown.mp4',
+    instructions: [
+      'Position arms firmly with elbows aligned with machine pivot.',
+      'Extend arms smoothly downward/forward until triceps fully contract.',
+      'Return with controlled resistance to roughly 90 degrees.',
+    ],
+    formTip: 'Keep upper arms fixed in place so only forearms pivot.',
+    commonMistake: 'Letting your elbows shift or using bodyweight to push.',
+  },
+  incline_press: {
+    id: 'incline_press',
+    name: 'Incline Press',
+    targetMuscles: ['Upper Chest', 'Front Shoulders', 'Triceps'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 35,
+    weightUnit: 'kg',
+    animationType: 'incline_press',
+    videoUrl: '/videos/chest_press.mp4',
+    instructions: [
+      'Lie back on an incline bench angled at 30–45 degrees with feet firmly planted.',
+      'Lower the bar with control to your upper chest / collarbone area.',
+      'Press upward in a controlled vertical arc until arms are extended.',
+    ],
+    formTip: 'Keep shoulder blades squeezed together against the pad.',
+    commonMistake: 'Bouncing the bar off your chest or arching lower back excessively.',
+    alternativeExerciseId: 'bench_press',
+    alternativeName: 'Bench Press',
+    alternativeReason: 'Classic horizontal pressing movement for overall chest development.',
+  },
+  // Backward compatibility alias for chest_press_machine
+  chest_press_machine: {
+    id: 'chest_press_machine',
+    name: 'Incline Press',
+    targetMuscles: ['Upper Chest', 'Front Shoulders', 'Triceps'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 35,
+    weightUnit: 'kg',
+    animationType: 'incline_press',
+    videoUrl: '/videos/chest_press.mp4',
+    instructions: [
+      'Lie back on an incline bench angled at 30–45 degrees with feet firmly planted.',
+      'Lower the bar with control to your upper chest / collarbone area.',
+      'Press upward in a controlled vertical arc until arms are extended.',
+    ],
+    formTip: 'Keep shoulder blades squeezed together against the pad.',
+    commonMistake: 'Bouncing the bar off your chest or arching lower back excessively.',
+    alternativeExerciseId: 'bench_press',
+    alternativeName: 'Bench Press',
+    alternativeReason: 'Classic horizontal pressing movement for overall chest development.',
+  },
+  squat: {
+    id: 'squat',
+    name: 'Squat',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Hamstrings', 'Core'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 40,
+    weightUnit: 'kg',
+    animationType: 'squat',
+    videoUrl: '/videos/squat.mp4',
+    instructions: [
+      'Rest the bar across your upper back/traps with feet shoulder-width apart.',
+      'Hinge hips back and bend knees, squatting down until thighs reach parallel.',
+      'Drive through the mid-foot to stand back up tall with chest proud.',
+    ],
+    formTip: 'Keep your chest proud and knees tracking in line with your toes.',
+    commonMistake: 'Collapsing knees inward or rounding your spine forward.',
+  },
+  // Backward compatibility alias for goblet_squat
+  goblet_squat: {
+    id: 'goblet_squat',
+    name: 'Squat',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Hamstrings', 'Core'],
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 40,
+    weightUnit: 'kg',
+    animationType: 'squat',
+    videoUrl: '/videos/squat.mp4',
+    instructions: [
+      'Rest the bar across your upper back/traps with feet shoulder-width apart.',
+      'Hinge hips back and bend knees, squatting down until thighs reach parallel.',
+      'Drive through the mid-foot to stand back up tall with chest proud.',
+    ],
+    formTip: 'Keep your chest proud and knees tracking in line with your toes.',
+    commonMistake: 'Collapsing knees inward or rounding your spine forward.',
+  },
+  deadlift: {
+    id: 'deadlift',
+    name: 'Deadlift',
+    targetMuscles: ['Hamstrings', 'Glutes', 'Lower Back', 'Traps'],
+    defaultSets: 3,
+    defaultReps: 8,
+    defaultWeight: 50,
+    weightUnit: 'kg',
+    animationType: 'deadlift',
+    videoUrl: '/videos/deadlift.mp4',
+    instructions: [
+      'Stand with mid-foot under the barbell, feet hip-width apart.',
+      'Hinge down, grip the bar just outside knees, and drop hips until shins touch bar.',
+      'Drive floor away with your legs to stand tall with chest proud.',
+    ],
+    formTip: 'Keep bar close to your shins and keep your spine straight throughout.',
+    commonMistake: 'Rounding the lower back or jerking the bar off the floor.',
+  },
+};
+
+export const DEFAULT_USER: UserProfile = {
+  name: 'Raj',
+  age: 24,
+  gender: 'Male',
+  height: 175,
+  heightUnit: 'cm',
+  weight: 64,
+  weightUnit: 'kg',
+  goal: 'Build Muscle',
+  experience: 'Complete Beginner',
+  schedule: '4 days',
+  duration: '45–60 min',
+  equipment: 'Full Gym',
+  onboarded: true,
+  cohort: 'returning',
+};
+
+export function createInitialWorkout(exerciseIds: string[], title = "Upper Body", minutes = 42): WorkoutSession {
+  return {
+    id: 'session_' + Date.now(),
+    title,
+    subtitle: '6 exercises · ' + minutes + ' min',
+    estimatedMinutes: minutes,
+    isCompleted: false,
+    currentExerciseIndex: 0,
+    exercises: exerciseIds.map((id) => {
+      const exercise = EXERCISES[id] || EXERCISES.bench_press;
+      return {
+        exercise,
+        targetSets: exercise.defaultSets,
+        isCompleted: false,
+        sets: Array.from({ length: exercise.defaultSets }, (_, i) => ({
+          setNumber: i + 1,
+          weight: exercise.defaultWeight,
+          reps: exercise.defaultReps,
+          completed: false,
+        })),
+      };
+    }),
+  };
+}
+
+export const INITIAL_UPPER_BODY_SESSION = createInitialWorkout(
+  ['bench_press', 'pull_ups', 'shoulder_press', 'bent_over_row', 'dumbbell_curl', 'tricep_pushdown'],
+  'Upper Body',
+  42
+);
+
+export const FIRST_TIME_BEGINNER_SESSION = createInitialWorkout(
+  ['incline_press', 'pull_ups', 'squat', 'dumbbell_curl', 'tricep_pushdown'],
+  'Full Body Beginner',
+  30
+);
+
+export const RESTART_SESSION = createInitialWorkout(
+  ['incline_press', 'pull_ups', 'squat'],
+  '20-Min Restart Ease-In',
+  20
+);
+
+export const MOCK_STRENGTH_PROGRESS: StrengthProgressItem[] = [
+  { exerciseName: 'Bench Press', initialWeight: 40, currentWeight: 45, targetWeight: 50, unit: 'kg', trend: '+12.5%' },
+  { exerciseName: 'Pull-Ups', initialWeight: 0, currentWeight: 5, targetWeight: 10, unit: 'reps', trend: '+5 reps' },
+  { exerciseName: 'Shoulder Press', initialWeight: 15, currentWeight: 20, targetWeight: 22.5, unit: 'kg', trend: '+33.3%' },
+  { exerciseName: 'Bent-Over Row', initialWeight: 30, currentWeight: 35, targetWeight: 40, unit: 'kg', trend: '+16.6%' },
+];
+
+export const MOCK_WORKOUT_LOGS: WorkoutLog[] = [
+  { id: 'log-1', date: 'Yesterday', title: 'Lower Body & Core', durationMin: 38, exercisesCompleted: 5, setsCompleted: 15, highlightWin: 'Squat 40 kg → 45 kg' },
+  { id: 'log-2', date: '3 days ago', title: 'Upper Body Power', durationMin: 44, exercisesCompleted: 6, setsCompleted: 18, highlightWin: 'Pull-Ups 5 reps → 8 reps' },
+  { id: 'log-3', date: '5 days ago', title: 'Upper Body Primer', durationMin: 40, exercisesCompleted: 6, setsCompleted: 18, highlightWin: 'Bench Press 40 kg → 42.5 kg' },
+  { id: 'log-4', date: 'Last week', title: 'Full Body Intro', durationMin: 32, exercisesCompleted: 5, setsCompleted: 15, highlightWin: 'Completed all sets with good form' },
+];

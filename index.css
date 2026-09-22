@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@keyframes checkmark-stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale-spring {
+  0% {
+    transform: scale(0.95);
+  }
+  45% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ripple-wave {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+}
+
+.animate-scale-spring {
+  animation: scale-spring 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-ripple {
+  animation: ripple-wave 0.6s ease-out forwards;
+}
+
+.animate-draw-check {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: checkmark-stroke 0.38s cubic-bezier(0.65, 0, 0.45, 1) 0.05s forwards;
+}
